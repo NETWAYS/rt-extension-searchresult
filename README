@@ -1,0 +1,42 @@
+NAME
+    RT::Extension::SearchResult
+
+DESCRIPTION
+
+RT VERSION
+    Works with RT 4.4.3
+
+REQUIREMENTS
+
+INSTALLATION
+    perl Makefile.PL
+    make
+    make install
+        May need root permissions
+
+    Edit your /opt/rt4/etc/RT_SiteConfig.pm
+        Add this line:
+
+            Plugin('RT::Extension::SearchResult');
+
+    Clear your mason cache
+            rm -rf /opt/rt4/var/mason_data/obj
+
+    Restart your webserver
+
+CONFIGURATION
+
+AUTHOR
+    NETWAYS GmbH <support@netways.de>
+
+BUGS
+    All bugs should be reported on GitHub
+    <https://github.com/NETWAYS/rt-extension-searchresult>.
+
+LICENSE AND COPYRIGHT
+    This software is Copyright (c) 2018 by NETWAYS GmbH
+
+    This is free software, licensed under:
+
+      The GNU General Public License, Version 2, June 1991
+
