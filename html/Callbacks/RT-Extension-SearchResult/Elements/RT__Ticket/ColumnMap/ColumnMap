@@ -1,0 +1,52 @@
+<%ARGS>
+$COLUMN_MAP => undef;
+</%ARGS>
+<%INIT>
+
+sub statusInColor {
+	my $ticket = shift;
+	my $color = undef;
+	my $state = $ticket->Status;
+
+	if ($state eq 'new') {
+		$color = "900000";
+	} elsif ($state eq 'open') {
+		$color = "#AA8000";
+	} elsif ($state eq 'stalled') {
+		$color = "#000090";
+	} elsif ($state eq 'rejected') {
+		$color = "#999999";
+	} elsif ($state eq 'resolved') {
+		$color = "009000";
+	}
+
+	$state = loc($state);
+
+	if ($color) {
+		$state = "<font color=$color>$state</font>";
+	}
+
+	# The backslash is important so RT renders HTML later.
+	return \"<b>$state</b>";
+}
+
+# TODO: Find a way to override the entire row line.
+$COLUMN_MAP->{'Status'}->{'value'} = \&statusInColor;
+# Also override this, since this is the default in the result template
+$COLUMN_MAP->{'ExtendedStatus'}->{'value'} = \&statusInColor;
+
+## Additional keys via configuration.
+
+# TODO: Keyname and content via configuration
+my $key = 'Icon';
+my $value = '<img src="icon.png"></img>';
+
+$COLUMN_MAP->{$key} = {
+	title => $key,
+	attribute => $key,
+	value => sub {
+		return $value;
+	}
+}
+
+</%INIT>
