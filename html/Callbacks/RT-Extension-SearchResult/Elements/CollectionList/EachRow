@@ -1,0 +1,14 @@
+<%INIT>
+my $status = $Record->Status;
+
+#use Data::Dumper;
+#$RT::Logger->warn(Dumper($Record->Status));
+
+# specify the CSS classes, set by reference
+$$Classes = "status".loc($status);
+
+</%INIT>
+<%ARGS>
+$Record => undef
+$Classes => ''
+</%ARGS>
