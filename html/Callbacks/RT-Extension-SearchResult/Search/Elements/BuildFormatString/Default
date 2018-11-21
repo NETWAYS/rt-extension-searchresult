@@ -1,0 +1,15 @@
+<%INIT>
+# Additional columns via configuration
+my $additionalColumns = RT->Config->Get('SearchResult_AdditionalColumns');
+
+foreach my $key (keys %{$additionalColumns}) {
+  push @{$Fields}, $key;
+}
+
+# Enable Preview
+push @{$Fields}, 'Preview' if RT->Config->Get('SearchResult_PreviewEnabled');
+
+</%INIT>
+<%ARGS>
+$Fields => undef
+</%ARGS>
