@@ -74,4 +74,16 @@ systemctl restart apache2
 ```perl
 Plugin('RT::Extension::SearchResult');
 
+Set($SearchResult_PreviewEnabled,
+{
+  lines => 3
+}
+);
+
+Set($SearchResult_AdditionalColumns,
+{
+  'Icon' => '<img src="icon.png"></img>'
+}
+);
+
 ```
