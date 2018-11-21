@@ -16,7 +16,9 @@ foreach my $key (keys %{$additionalColumns}) {
   $COLUMN_MAP->{$key} = {
     title => $key,
     attribute => $key,
-    value => sub { return $value; }
+    value => sub {
+      return $value;
+    }
   }
 }
 
@@ -30,6 +32,26 @@ if (RT->Config->Get('SearchResult_PreviewEnabled')) {
   }
 }
 
+# Icon column
+$COLUMN_MAP->{'Icon'} = {
+  title => 'Icon',
+  value => sub {
+    my $ticket = shift;
+    my $state = $ticket->Status;
+
+    my $CFConditions = RT->Config->Get('SearchResult_HighlightOnCFCondition');
+
+    for my $key (keys %{$CFConditions}) {
+      my $value = %{$CFConditions}{$key};
+
+      my $cfValue = $ticket->FirstCustomFieldValue($key);
+
+      if ($cfValue == $value) {
+        return \'<span class="fa fa-calendar"></span>';
+      }
+    }
+  }
+}
 
 </%INIT>
 <%ARGS>

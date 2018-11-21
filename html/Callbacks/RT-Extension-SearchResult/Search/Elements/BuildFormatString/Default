@@ -6,6 +6,9 @@ foreach my $key (keys %{$additionalColumns}) {
   push @{$Fields}, $key;
 }
 
+# Enable Icon
+push @{$Fields}, 'Icon';
+
 # Enable Preview
 push @{$Fields}, 'Preview' if RT->Config->Get('SearchResult_PreviewEnabled');
 
