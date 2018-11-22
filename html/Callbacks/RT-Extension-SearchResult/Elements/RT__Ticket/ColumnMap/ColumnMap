@@ -40,14 +40,15 @@ $COLUMN_MAP->{'Icon'} = {
     my $state = $ticket->Status;
 
     my $CFConditions = RT->Config->Get('SearchResult_HighlightOnCFCondition');
+    my $faIcon = RT->Config->Get('SearchResult_HighlightIcon');
 
     for my $key (keys %{$CFConditions}) {
       my $value = %{$CFConditions}{$key};
 
       my $cfValue = $ticket->FirstCustomFieldValue($key);
 
-      if ($cfValue == $value) {
-        return \'<span class="fa fa-calendar"></span>';
+      if ("$cfValue" eq "$value") {
+        return \"<span class=\"fa $faIcon\"></span>";
       }
     }
   }
