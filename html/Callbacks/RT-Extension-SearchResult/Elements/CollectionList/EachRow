@@ -7,9 +7,20 @@ my $status = $Record->Status;
 
 #use Data::Dumper;
 #$RT::Logger->warn(Dumper($Record->Status));
+my @additionalClasses;
 
 # specify the CSS classes, set by reference
-$$Classes = "status".loc($status);
+if (RT->Config->Get('SearchResult_StatusBackgroundColor')) {
+  push @additionalClasses, "status".loc($status);
+}
+
+my $config = RT->Config->Get('SearchResult_HighlightBackgroundColor');
+
+if (defined($config->{'color'})) {
+  push @additionalClasses, "row-bg-color-".$config->{'color'};
+}
+
+$$Classes = join(' ', @additionalClasses);
 
 </%INIT>
 <%ARGS>

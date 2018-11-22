@@ -1,13 +1,35 @@
-/* Global settings borrowed from dnsmichi/dashing-icinga2. */
-
 /* unset even and odd line colors. */
 tr.evenline {}
 tr.oddline {}
 
 tr.rowhighlight {background-color:#f0f8ff;margin:0;border:0;padding:0;spacing:0;}
 
-/* Status Colours */
+/* bg colors from highlight. */
+tr.row-bg-color-red td {
+ background-color: rgba(255, 85, 102, 0.1)
+}
 
+tr.row-bg-color-blue td {
+ background-color: rgba(0, 149, 191, 0.1)
+}
+
+tr.row-bg-color-green td {
+ background-color: rgba(68, 187, 119, 0.1)
+}
+
+tr.row-bg-color-yellow td {
+ background-color: rgba(255, 170, 68, 0.1)
+}
+
+tr.row-bg-color-purple td {
+ background-color: rgba(170, 68, 255, 0.1)
+}
+
+tr.row-bg-color-grey td {
+ background-color: rgba(153, 153, 153, 0.1)
+}
+
+/* Status Colours */
 tr.statusnew td {
  background-color: rgba(255, 85, 102, 0.1)
 }
