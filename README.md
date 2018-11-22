@@ -69,21 +69,67 @@ systemctl restart apache2
 
 ## Configuration
 
+### Highlight on CF Condition
+
+You can define multiple highlights at once. Each configuration entry
+requires
+
+Key           |
+--------------|----------------
+`conditions`  | **Required.** One or multiple key-value pairs in the format `CF_name => CF_expected_value`.
+`color`       | **Optional.** Background color for the highlighted search result line. Supported colors are: `red`, `green`, `blue`, `yellow`, `purple`, `grey`.
+`icon`        | **Optional.** FontAwesome icon available as additional column in search results, when the condition matches.
+
+#### Example
+
+```perl
+Set($SearchResult_HighlightOnCFCondition,
+[
+{
+  "conditions" => { "TicketReceived" => "yes" },
+  "color" => "green",
+  "icon" => "fa-check"
+},
+{
+  "conditions" => { "TicketBought" => "yes" },
+  "color" => "red",
+  "icon" => "fa-pause"
+}
+]
+);
+```
+
+### Font Awesome Icons
+
+[Font Awesome](https://fontawesome.com) 4.0 SVG icon set is
+included, you can use for example:
+
+* fa-envelope
+* fa-comment
+* fa-share
+* fa-folder-open
+* fa-check
+* fa-ban
+* fa-trash-alt
+* fa-star
+* fa-sync-alt
+* fa-pause
+* fa-copy
+* fa-check-circle
+* fa-pause-circle
+* fa-user-secret
+* fa-recycle
+* fa-cloud-upload-alt
+
+
+
+### Status Background Color
+
+```perl
+Set($SearchResult_StatusBackgroundColor, 1);
+```
+
 ### Example
 
 ```perl
-Plugin('RT::Extension::SearchResult');
-
-Set($SearchResult_PreviewEnabled,
-{
-  lines => 3
-}
-);
-
-Set($SearchResult_AdditionalColumns,
-{
-  'Icon' => '<img src="icon.png"></img>'
-}
-);
-
 ```
