@@ -36,21 +36,8 @@ if (RT->Config->Get('SearchResult_PreviewEnabled')) {
 $COLUMN_MAP->{'Icon'} = {
   title => 'Icon',
   value => sub {
-    my $ticket = shift;
-    my $state = $ticket->Status;
-
-    my $CFConditions = RT->Config->Get('SearchResult_HighlightOnCFCondition');
-    my $faIcon = RT->Config->Get('SearchResult_HighlightIcon');
-
-    for my $key (keys %{$CFConditions}) {
-      my $value = %{$CFConditions}{$key};
-
-      my $cfValue = $ticket->FirstCustomFieldValue($key);
-
-      if ("$cfValue" eq "$value") {
-        return \"<span class=\"fa $faIcon\"></span>";
-      }
-    }
+    # Use helper from Ticket_Local.pm
+    return loc($_[0]->getFAIconCode);
   }
 }
 

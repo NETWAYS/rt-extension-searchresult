@@ -4,6 +4,52 @@ use strict;
 use warnings;
 use Encode qw/decode_utf8/;
 
+sub getFAIconCode {
+  my $ticket = shift;
+
+  my $CFConfig = RT->Config->Get('SearchResult_HighlightOnCFCondition');
+
+  return undef if !defined($CFConfig);
+
+  for my $c (@{$CFConfig}) {
+    my $CFConditions = $c->{'conditions'};
+    my $CFFAIcon = $c->{'icon'};
+
+    for my $key (keys %{$CFConditions}) {
+      my $value = %{$CFConditions}{$key};
+
+      my $cfValue = $ticket->FirstCustomFieldValue($key);
+
+      if ("$cfValue" eq "$value") {
+        return \"<span class=\"fa $CFFAIcon\"></span>";
+      }
+    }
+  }
+}
+
+sub getRowBGColorClass {
+  my $ticket = shift;
+
+  my $CFConfig = RT->Config->Get('SearchResult_HighlightOnCFCondition');
+
+  return undef if !defined($CFConfig);
+
+  for my $c (@{$CFConfig}) {
+    my $CFConditions = $c->{'conditions'};
+    my $CFBGColor = $c->{'color'};
+
+    for my $key (keys %{$CFConditions}) {
+      my $value = %{$CFConditions}{$key};
+
+      my $cfValue = $ticket->FirstCustomFieldValue($key);
+
+      if ("$cfValue" eq "$value") {
+        return "row-bg-color-".$CFBGColor;
+      }
+    }
+  }
+}
+
 sub Preview {
   my $self = shift;
 

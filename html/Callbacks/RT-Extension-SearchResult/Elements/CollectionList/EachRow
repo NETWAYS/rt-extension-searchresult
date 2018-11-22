@@ -14,10 +14,11 @@ if (RT->Config->Get('SearchResult_StatusBackgroundColor')) {
   push @additionalClasses, "status".loc($status);
 }
 
-my $config = RT->Config->Get('SearchResult_HighlightBackgroundColor');
+# Use helper from Ticket_Local.pm
+my $BGColorClass = $Record->getRowBGColorClass;
 
-if (defined($config->{'color'})) {
-  push @additionalClasses, "row-bg-color-".$config->{'color'};
+if (defined($BGColorClass)) {
+  push @additionalClasses, $BGColorClass;
 }
 
 $$Classes = join(' ', @additionalClasses);
