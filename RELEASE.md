@@ -3,7 +3,7 @@
 Specify the release version as shell variable.
 
 ```
-VERSION=2.0.0
+VERSION=0.9.0
 ```
 
 ## Issues

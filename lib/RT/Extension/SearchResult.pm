@@ -5,7 +5,7 @@ use strict;
 use version;
 use RT;
 
-our $VERSION='1.0.0';
+our $VERSION='0.9.0';
 
 RT->AddJavaScript('fontawesome-svg/js/fontawesome-all.min.js');
 RT->AddStyleSheets('searchresult.css');
@@ -52,7 +52,8 @@ Add this line:
 
 =head1 CONFIGURATION
 
-=head2 Example
+Check the online documentation at
+https://github.com/NETWAYS/rt-extension-searchresult
 
 =over
 
