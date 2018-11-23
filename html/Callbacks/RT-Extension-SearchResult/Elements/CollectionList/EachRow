@@ -15,7 +15,7 @@ if (RT->Config->Get('SearchResult_StatusBackgroundColor')) {
 }
 
 # Use helper from Ticket_Local.pm
-my $BGColorClass = $Record->getRowBGColorClass;
+my $BGColorClass = $Record->getHighlight("rowclass");
 
 if (defined($BGColorClass)) {
   push @additionalClasses, $BGColorClass;

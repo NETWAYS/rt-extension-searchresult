@@ -37,7 +37,7 @@ $COLUMN_MAP->{'Icon'} = {
   title => ' ', # we don't need an extra title
   value => sub {
     # Use helper from Ticket_Local.pm
-    return loc($_[0]->getFAIconCode);
+    return loc($_[0]->getHighlight("icon"));
   }
 }
 
