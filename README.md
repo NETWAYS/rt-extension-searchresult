@@ -110,6 +110,20 @@ Set($SearchResult_HighlightOnCFCondition,
 );
 ```
 
+### Highlight On Last Updated By Condition
+
+```perl
+Set($SearchResult_HighlightOnLastUpdatedByCondition,
+[
+{
+  "conditions" => { "owner" => 1 },
+  "color" => "blue",
+  "icon" => "fa-star"
+}
+]
+);
+```
+
 ### Font Awesome Icons
 
 [Font Awesome](https://fontawesome.com) 4.0 SVG icon set is
