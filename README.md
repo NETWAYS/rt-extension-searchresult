@@ -11,6 +11,17 @@
 
 ## About
 
+Allows to highlight search result rows matching defined conditions:
+
+* CF name matches value
+
+The rows can be highlighted with
+
+* Transparent background color
+* Icon as an additional column from the extended search editor.
+
+![Screenshot](doc/images/rt_searchresult_highlight_on_cf_condition_icon_bgcolor.png)
+
 ## License
 
 This project is licensed under the terms of the GNU General Public License Version 2.
@@ -74,7 +85,7 @@ systemctl restart apache2
 You can define multiple highlights at once. Each configuration entry
 requires
 
-Key           |
+Key           | Description
 --------------|----------------
 `conditions`  | **Required.** One or multiple key-value pairs in the format `CF_name => CF_expected_value`.
 `color`       | **Optional.** Background color for the highlighted search result line. Supported colors are: `red`, `green`, `blue`, `yellow`, `purple`, `grey`.
