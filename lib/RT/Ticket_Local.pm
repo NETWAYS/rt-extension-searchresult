@@ -37,9 +37,9 @@ sub getFAIconCode {
     if (defined($LUBConditions->{'owner'})) {
       # don't care about the value, just compare owner with last update by
       my $ownerObj = $ticket->OwnerObj;
-      my $owner = $ownerObj->Name;
+      my $owner = $ownerObj->id;
       my $lastUpdatedByObj = $ticket->LastUpdatedByObj;
-      my $lastUpdatedBy = $lastUpdatedByObj->Name;
+      my $lastUpdatedBy = $lastUpdatedByObj->id;
 
       #RT::Logger->debug("Owner: $owner Last updated by $lastUpdatedBy");
 
