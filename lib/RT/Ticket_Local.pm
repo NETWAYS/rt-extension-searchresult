@@ -30,17 +30,20 @@ sub getFAIconCode {
   # Ticket Last Updated By Condition
   my $LastUpdatedByConfig = RT->Config->Get('SearchResult_HighlightOnLastUpdatedByCondition');
 
+  my $ownerObj = $ticket->OwnerObj;
+  my $owner = $ownerObj->id;
+  my $ownerGroups = $ownerObj->OwnGroups;
+
+  my $lastUpdatedByObj = $ticket->LastUpdatedByObj;
+  my $lastUpdatedBy = $lastUpdatedByObj->id;
+  my $lastUpdatedByGroups = $lastUpdatedByObj->OwnGroups;
+
   for my $lubc (@{$LastUpdatedByConfig}) {
     my $LUBConditions = $lubc->{'conditions'};
     my $LUBFAIcon = $lubc->{'icon'};
 
     if (defined($LUBConditions->{'owner'})) {
       # don't care about the value, just compare owner with last update by
-      my $ownerObj = $ticket->OwnerObj;
-      my $owner = $ownerObj->id;
-      my $lastUpdatedByObj = $ticket->LastUpdatedByObj;
-      my $lastUpdatedBy = $lastUpdatedByObj->id;
-
       #RT::Logger->debug("Owner: $owner Last updated by $lastUpdatedBy");
 
       if ("$owner" ne "$lastUpdatedBy") {
@@ -48,8 +51,24 @@ sub getFAIconCode {
         return \"<span class=\"fa $LUBFAIcon\"></span>";
       }
     }
-    if (defined($LUBConditions->{'group'})) {
+    if (defined($LUBConditions->{'groups'})) {
       # check whether last reply did not happen from outside group members
+      my $highlight = 1;
+
+      for my $groupName (@{ $LUBConditions->{'groups'} }) {
+        my $group = RT::Group->new();
+        $group->LoadUserDefinedGroup($groupName);
+
+        if ($group->HasMemberRecursively($lastUpdatedBy)) {
+          $highlight = 0;
+          last;
+        }
+      }
+
+      if ($highlight == 1) {
+        # The backslash is important, RT does render this HTML snippet later.
+        return \"<span class=\"fa $LUBFAIcon\"></span>";
+      }
     }
   }
 }
