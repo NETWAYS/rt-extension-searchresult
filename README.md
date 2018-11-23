@@ -11,16 +11,22 @@
 
 ## About
 
-Allows to highlight search result rows matching defined conditions:
+You can use this extension e.g. for the following scenarios:
 
-* CF name matches value
+* Immediately visualize open tasks with customer replies on tickets.
+* Highlight workflow steps with custom fields. Ticket bought -> on hold, action required. Ticket received -> say thanks, close ticket.
+
+The search result rows can be highlighted matching defined conditions:
+
+* Custom name matches value
+* Last Updated By is not the ticket owner or in a specified group
 
 The rows can be highlighted with
 
 * Transparent background color
 * Icon as an additional column from the extended search editor.
 
-![Screenshot](doc/images/rt_searchresult_highlight_on_cf_condition_icon_bgcolor.png)
+![Screenshot](doc/images/rt_extension_searchresult_highlight_rows_icons_colors.png)
 
 ## License
 
@@ -36,6 +42,7 @@ You may also send us an email to [support@netways.de](mailto:support@netways.de)
 ## Requirements
 
 - RT 4.4.3
+- Search results containing a NEWLINE separator need [PR #273](https://github.com/bestpractical/rt/pull/273).
 
 ## Installation
 
@@ -82,6 +89,9 @@ systemctl restart apache2
 
 ### Highlight on CF Condition
 
+The search result row will be highlighted when a CF name
+matches a specified value.
+
 You can define multiple highlights at once. Each configuration entry
 requires
 
@@ -112,13 +122,33 @@ Set($SearchResult_HighlightOnCFCondition,
 
 ### Highlight On Last Updated By Condition
 
+This can be used to highlight the search result row
+if
+
+* The owner is not the same as the last updated by user
+* The last updated by user is not in one of the specified RT groups.
+
+You can define multiple highlights at once. Each configuration entry
+requires
+
+Key           | Description
+--------------|----------------
+`conditions`  | **Required.** One or multiple key-value pairs in the format `CF_name => CF_expected_value`.
+`color`       | **Optional.** Background color for the highlighted search result line. Supported colors are: `red`, `green`, `blue`, `yellow`, `purple`, `grey`.
+`icon`        | **Optional.** FontAwesome icon available as additional column in search results, when the condition matches.
+
 ```perl
 Set($SearchResult_HighlightOnLastUpdatedByCondition,
 [
+#{
+#  "conditions" => { "owner" => 1 },
+#  "color" => "blue",
+#  "icon" => "fa-star"
+#},
 {
-  "conditions" => { "owner" => 1 },
-  "color" => "blue",
-  "icon" => "fa-star"
+  "conditions" => { "groups" => [ "admins" ] },
+  "color" => "purple",
+  "icon" => "fa-exclamation-circle"
 }
 ]
 );
@@ -145,16 +175,3 @@ included, you can use for example:
 * fa-user-secret
 * fa-recycle
 * fa-cloud-upload-alt
-
-
-
-### Status Background Color
-
-```perl
-Set($SearchResult_StatusBackgroundColor, 1);
-```
-
-### Example
-
-```perl
-```
