@@ -5,7 +5,7 @@ license 'gpl_2';
 repository 'https://github.com/NETWAYS/rt-extension-searchresult';
 readme_from 'lib/RT/Extension/SearchResult.pm';
 
-requires_rt '4.4.3';
+requires_rt '4.4.1';
 
 sign;
 WriteAll;
