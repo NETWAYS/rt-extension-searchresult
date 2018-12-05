@@ -1,27 +1,4 @@
 <%INIT>
-## Additional keys via configuration.
-my $additionalColumns = RT->Config->Get('SearchResult_AdditionalColumns');
-
-if (ref($additionalColumns) ne 'HASH') {
-  RT::Logger->warning('SearchResult_AdditionalColumns is not a hash configuration.');
-  return;
-}
-
-foreach my $key (keys %{$additionalColumns}) {
-  my $value = %{$additionalColumns}{$key};
-
-  use Data::Dumper;
-  RT::Logger->debug("additionalColumn $key:".Dumper($value));
-
-  $COLUMN_MAP->{$key} = {
-    title => $key,
-    attribute => $key,
-    value => sub {
-      return $value;
-    }
-  }
-}
-
 # Preview column
 if (RT->Config->Get('SearchResult_PreviewEnabled')) {
   $COLUMN_MAP->{'Preview'} = {

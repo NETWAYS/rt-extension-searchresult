@@ -1,11 +1,4 @@
 <%INIT>
-# Additional columns via configuration
-my $additionalColumns = RT->Config->Get('SearchResult_AdditionalColumns');
-
-foreach my $key (keys %{$additionalColumns}) {
-  push @{$Fields}, $key;
-}
-
 # Enable Icon
 push @{$Fields}, 'Icon';
 
