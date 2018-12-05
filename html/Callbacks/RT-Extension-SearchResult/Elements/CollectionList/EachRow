@@ -1,7 +1,7 @@
 <%INIT>
-# Otherwise admin page with queue listing breaks
-# RT::Logger->debug("EachRow callback, record type is $Record->RecordType");
-return if $Record->RecordType ne 'Ticket';
+# Ensure that our override only affects records of the RT::Ticket object.
+# There's no garantuee that $Record is inherited from RT::Record as base class.
+return if not $Record->isa('RT::Ticket');
 
 my $status = $Record->Status;
 
