@@ -1,1 +1,24 @@
-ColumnMap
+<%INIT>
+# Preview column
+if (RT->Config->Get('SearchResult_PreviewEnabled')) {
+  $COLUMN_MAP->{'Preview'} = {
+    title => 'Preview',
+    value => sub {
+      return loc($_[0]->Preview);
+    }
+  }
+}
+
+# Icon column
+$COLUMN_MAP->{'Icon'} = {
+  title => ' ', # we don't need an extra title
+  value => sub {
+    # Use helper from Ticket_Local.pm
+    return loc($_[0]->getHighlight("icon"));
+  }
+}
+
+</%INIT>
+<%ARGS>
+$COLUMN_MAP => undef;
+</%ARGS>
