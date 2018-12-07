@@ -28,7 +28,7 @@ sub getHighlight {
       my $cfValue = $ticket->FirstCustomFieldValue($key);
 
       # CF equal match
-      if ("$cfValue" =~ /$value/) {
+      if (defined($cfValue) && "$cfValue" =~ /$value/) {
         if ($mode eq 'rowclass') {
           return "row-bg-color-".$CFBGColor;
         } elsif ($mode eq 'icon') {
