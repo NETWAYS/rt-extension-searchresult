@@ -5,7 +5,7 @@ use strict;
 use version;
 use RT;
 
-our $VERSION='0.9.0';
+our $VERSION='1.0.0';
 
 if (eval { require RT::Extension::FontAwesome; }) {
     RT->Logger->debug('SearchResults: RT-Extension-FontAwesome is available, omit loading');
