@@ -26,7 +26,7 @@ The rows can be highlighted with
 * Transparent background color
 * Icon as an additional column from the extended search editor.
 
-![Screenshot](doc/images/rt_extension_searchresult_highlight_rows_icons_colors.png)
+![Screenshot](doc/images/rt_extension_searchresult_overview.png)
 
 ## License
 
