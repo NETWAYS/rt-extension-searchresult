@@ -7,7 +7,13 @@ use RT;
 
 our $VERSION='0.9.0';
 
-RT->AddJavaScript('fontawesome-svg/js/fontawesome-all.min.js');
+if (eval { require RT::Extension::FontAwesome; }) {
+    RT->Logger->debug('SearchResults: RT-Extension-FontAwesome is available, omit loading');
+} else {
+    RT->Logger->debug('SearchResults: RT-Extension-FontAwesome is NOT available, loading our own');
+    RT->AddJavaScript('fontawesome-svg/js/fontawesome-all.min.js');
+}
+
 RT->AddStyleSheets('searchresult.css');
 
 =pod
