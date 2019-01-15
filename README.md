@@ -87,6 +87,12 @@ systemctl restart apache2
 
 ## Configuration
 
+The configuration order doesn't matter, the following conditions are evaluted (first wins):
+
+* Relative Due Date
+* Custom Fields
+* Last Updated By
+
 ### Highlight on Relative Due Date
 
 The search result row will be highlighted when a due date is
