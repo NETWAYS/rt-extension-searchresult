@@ -143,7 +143,7 @@ Set($SearchResult_HighlightOnCFCondition,
 [
 {
   "conditions" => { "TicketReceived" => "yes" },
-  "color" => "green",
+  "color" => "green-light",
   "icon" => "fa-check"
 },
 {
@@ -177,12 +177,12 @@ Set($SearchResult_HighlightOnLastUpdatedByCondition,
 [
 #{
 #  "conditions" => { "owner" => 1 },
-#  "color" => "blue",
+#  "color" => "blue-dark",
 #  "icon" => "fa-star"
 #},
 {
   "conditions" => { "groups" => [ "admins" ] },
-  "color" => "purple",
+  "color" => "yellow-dark",
   "icon" => "fa-exclamation-circle"
 }
 ]
@@ -191,11 +191,19 @@ Set($SearchResult_HighlightOnLastUpdatedByCondition,
 
 ### Colors
 
-`red`, `green`, `blue`, `yellow`, `purple`, `grey`.
+Type    | Variants
+--------|----------
+Red     | red, red-light, red-dark
+Green   | green, green-light, green-dark
+Blue    | blue, blue-light, blue-dark
+Yellow  | yellow, yellow-light, yellow-dark
+Purple  | purple, purple-light, purple-dark
+Grey    | grey, grey-light, grey-dark
+
 
 ### Font Awesome Icons
 
-[Font Awesome](https://fontawesome.com) 4.0 SVG icon set is
+[Font Awesome](https://fontawesome.com) 5.0 SVG icon set is
 included, you can use for example:
 
 * fa-envelope
