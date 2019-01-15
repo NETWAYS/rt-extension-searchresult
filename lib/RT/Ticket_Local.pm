@@ -14,6 +14,42 @@ sub getHighlight {
     return;
   }
 
+  # Due Date
+  my $DueConfig = RT->Config->Get('SearchResult_HighlightOnDueDate');
+
+  for my $c (@{$DueConfig}) {
+    my $DueConditions = $c->{'conditions'};
+    my $DueFAIcon = $c->{'icon'};
+    my $DueBGColor = $c->{'color'};
+
+    # Seriously?
+    if ($ticket->DueObj->Unix != 0) {
+      my $now = new RT::Date($RT::SystemUser);
+      $now->SetToNow();
+
+      my $diff = $ticket->DueObj->Diff($now);
+
+      # ascending order. 3 wins over 8 for due dates.
+      for my $key (sort { %{$DueConditions}{$a} <=> %{$DueConditions}{$b} } keys %{$DueConditions}) {
+        next if $key ne 'due';
+
+        my $value = %{$DueConditions}{$key};
+
+        if ($diff < 60 * 60 * 24 * $value) {
+          RT::Logger->debug("Ticket #". $ticket->id ." will be due in < $value days, diff is ". ($diff / (60*60*24))  ." days. Marking search result.");
+
+          if ($mode eq 'rowclass') {
+            return "row-bg-color-".$DueBGColor;
+          } elsif ($mode eq 'icon') {
+            # The backslash is important, RT does render this HTML snippet later.
+            return \"<span class=\"fa $DueFAIcon\"></span>";
+          }
+        }
+      }
+    }
+
+  }
+
   # CF conditions
   my $CFConfig = RT->Config->Get('SearchResult_HighlightOnCFCondition');
 
