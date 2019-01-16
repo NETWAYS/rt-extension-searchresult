@@ -3,7 +3,7 @@
 Specify the release version as shell variable.
 
 ```
-VERSION=0.9.0
+VERSION=2.0.0
 ```
 
 ## Issues
@@ -27,10 +27,6 @@ Update the version in the module's `.pm` file and `META.yml`.
 find lib/RT/ -type f -name '*.pm' -exec sed -i "s/our \$VERSION=.*/our \$VERSION='$VERSION';/g" {} \;
 find . -type f -name 'META.yml' -exec sed -i "s/^version: .*/version: $VERSION/g" {} \;
 ```
-
-## Changelog
-
-Update the [CHANGELOG.md](CHANGELOG.md) file.
 
 ## Git Tag
 
