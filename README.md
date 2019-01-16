@@ -87,6 +87,48 @@ systemctl restart apache2
 
 ## Configuration
 
+The configuration order doesn't matter, the following conditions are evaluted (first wins):
+
+* Relative Due Date
+* Last Updated By
+* Custom Fields
+
+### Highlight on Relative Due Date
+
+The search result row will be highlighted when a due date is
+set and lower than the smallest value defined as condition.
+
+You can for example define a softer color for `due in 8 days`
+than `due in 3 days`.
+
+Each configuration entry requires
+
+Key           | Description
+--------------|----------------
+`conditions`  | **Required.** One or multiple key-value pairs in the format `"due" => <number of days>`.
+`color`       | **Optional.** Background color for the highlighted search result line. Supported colors are listed below.
+`icon`        | **Optional.** FontAwesome icon available as additional column in search results, when the condition matches.
+
+#### Example
+
+```perl
+# Highlight on: 1) already due 2) due in < 3 days.
+Set($SearchResult_HighlightOnDueDate,
+[
+{
+  "conditions" => { "due" => 0 },
+  "color" => "red-dark",
+  "icon" => "fa-question-circle"
+},
+{
+  "conditions" => { "due" => 3 },
+  "color" => "red-light",
+  "icon" => "fa-question-circle"
+},
+]
+);
+```
+
 ### Highlight on CF Condition
 
 The search result row will be highlighted when a CF name
@@ -98,7 +140,7 @@ requires
 Key           | Description
 --------------|----------------
 `conditions`  | **Required.** One or multiple key-value pairs in the format `CF_name => CF_expected_value`.
-`color`       | **Optional.** Background color for the highlighted search result line. Supported colors are: `red`, `green`, `blue`, `yellow`, `purple`, `grey`.
+`color`       | **Optional.** Background color for the highlighted search result line. Supported colors are listed below.
 `icon`        | **Optional.** FontAwesome icon available as additional column in search results, when the condition matches.
 
 #### Example
@@ -108,7 +150,7 @@ Set($SearchResult_HighlightOnCFCondition,
 [
 {
   "conditions" => { "TicketReceived" => "yes" },
-  "color" => "green",
+  "color" => "green-light",
   "icon" => "fa-check"
 },
 {
@@ -133,8 +175,8 @@ requires
 
 Key           | Description
 --------------|----------------
-`conditions`  | **Required.** One or multiple key-value pairs in the format `CF_name => CF_expected_value`.
-`color`       | **Optional.** Background color for the highlighted search result line. Supported colors are: `red`, `green`, `blue`, `yellow`, `purple`, `grey`.
+`conditions`  | **Required.** One or multiple key-value pairs in the format `"owner" => 1` or `"groups" => [ "<groupname>" ]`.
+`color`       | **Optional.** Background color for the highlighted search result line. Supported colors are listed below.
 `icon`        | **Optional.** FontAwesome icon available as additional column in search results, when the condition matches.
 
 ```perl
@@ -142,23 +184,40 @@ Set($SearchResult_HighlightOnLastUpdatedByCondition,
 [
 #{
 #  "conditions" => { "owner" => 1 },
-#  "color" => "blue",
+#  "color" => "blue-dark",
 #  "icon" => "fa-star"
 #},
 {
   "conditions" => { "groups" => [ "admins" ] },
-  "color" => "purple",
-  "icon" => "fa-exclamation-circle"
+  "color" => "yellow-dark",
+  "icon" => "fa-exclamation-triangle"
 }
 ]
 );
 ```
 
+### Colors
+
+Type    | Variants
+--------|----------
+Red     | red, red-light, red-dark
+Green   | green, green-light, green-dark
+Blue    | blue, blue-light, blue-dark
+Yellow  | yellow, yellow-light, yellow-dark
+Purple  | purple, purple-light, purple-dark
+Grey    | grey, grey-light, grey-dark
+
+
 ### Font Awesome Icons
 
-[Font Awesome](https://fontawesome.com) 4.0 SVG icon set is
+[Font Awesome](https://fontawesome.com) 5.0 SVG icon set is
 included, you can use for example:
 
+* fa-question-circle
+* fa-exclamation-circle
+* fa-check-circle
+* fa-pause-circle
+* fa-exclamation-triangle
 * fa-envelope
 * fa-comment
 * fa-share
@@ -170,8 +229,6 @@ included, you can use for example:
 * fa-sync-alt
 * fa-pause
 * fa-copy
-* fa-check-circle
-* fa-pause-circle
 * fa-user-secret
 * fa-recycle
 * fa-cloud-upload-alt

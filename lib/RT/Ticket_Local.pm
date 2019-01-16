@@ -14,32 +14,52 @@ sub getHighlight {
     return;
   }
 
-  # CF conditions
-  my $CFConfig = RT->Config->Get('SearchResult_HighlightOnCFCondition');
+  ######################################
+  # Due Date
+  ######################################
+  my $DueConfig = RT->Config->Get('SearchResult_HighlightOnDueDate');
 
-  for my $c (@{$CFConfig}) {
-    my $CFConditions = $c->{'conditions'};
-    my $CFFAIcon = $c->{'icon'};
-    my $CFBGColor = $c->{'color'};
+  # ascending order. 3 wins over 8 for due dates. Nested hash sorting needed.
+  for my $c ( sort {$a->{conditions}{due} <=> $b->{conditions}{due}} @{$DueConfig}) {
+    next if (!defined($c->{'conditions'}));
 
-    for my $key (keys %{$CFConditions}) {
-      my $value = %{$CFConditions}{$key};
+    next if ($mode eq 'rowclass' && !defined($c->{'color'}));
+    next if ($mode eq 'icon' && !defined($c->{'icon'}));
 
-      my $cfValue = $ticket->FirstCustomFieldValue($key);
+    my $DueConditions = $c->{'conditions'};
+    my $DueFAIcon = $c->{'icon'};
+    my $DueBGColor = $c->{'color'};
 
-      # CF equal match
-      if (defined($cfValue) && "$cfValue" =~ /$value/) {
-        if ($mode eq 'rowclass') {
-          return "row-bg-color-".$CFBGColor;
-        } elsif ($mode eq 'icon') {
-          # The backslash is important, RT does render this HTML snippet later.
-          return \"<span class=\"fa $CFFAIcon\"></span>";
+    # RT stores dates in Unix zero, if not set by the user
+    if ($ticket->DueObj->Unix != 0) {
+      my $now = new RT::Date($RT::SystemUser);
+      $now->SetToNow();
+
+      my $diff = $ticket->DueObj->Diff($now);
+
+      for my $key (keys %{$DueConditions}) {
+        next if $key ne 'due';
+
+        my $value = %{$DueConditions}{$key};
+
+        if ($diff < 60 * 60 * 24 * $value) {
+          RT::Logger->debug("Ticket #". $ticket->id ." will be due in < $value days, diff is ". ($diff / (60*60*24))  ." days. Marking search result.");
+
+          if ($mode eq 'rowclass') {
+            return "row-bg-color-".$DueBGColor;
+          } elsif ($mode eq 'icon') {
+            # The backslash is important, RT does render this HTML snippet later.
+            return \"<span class=\"fa $DueFAIcon\"></span>";
+          }
         }
       }
     }
+
   }
 
+  ######################################
   # Ticket Last Updated By Condition
+  ######################################
   my $LastUpdatedByConfig = RT->Config->Get('SearchResult_HighlightOnLastUpdatedByCondition');
 
   my $ownerObj = $ticket->OwnerObj;
@@ -50,10 +70,15 @@ sub getHighlight {
   my $lastUpdatedBy = $lastUpdatedByObj->id;
   my $lastUpdatedByGroups = $lastUpdatedByObj->OwnGroups;
 
-  for my $lubc (@{$LastUpdatedByConfig}) {
-    my $LUBConditions = $lubc->{'conditions'};
-    my $LUBFAIcon = $lubc->{'icon'};
-    my $LUBBGColor = $lubc->{'color'};
+  for my $c (@{$LastUpdatedByConfig}) {
+    next if (!defined($c->{'conditions'}));
+
+    next if ($mode eq 'rowclass' && !defined($c->{'color'}));
+    next if ($mode eq 'icon' && !defined($c->{'icon'}));
+
+    my $LUBConditions = $c->{'conditions'};
+    my $LUBFAIcon = $c->{'icon'};
+    my $LUBBGColor = $c->{'color'};
 
     if (defined($LUBConditions->{'owner'})) {
       # don't care about the value, just compare owner with last update by
@@ -92,6 +117,39 @@ sub getHighlight {
       }
     }
   }
+
+  ######################################
+  # CF conditions
+  ######################################
+  my $CFConfig = RT->Config->Get('SearchResult_HighlightOnCFCondition');
+
+  for my $c (@{$CFConfig}) {
+    next if (!defined($c->{'conditions'}));
+
+    next if ($mode eq 'rowclass' && !defined($c->{'color'}));
+    next if ($mode eq 'icon' && !defined($c->{'icon'}));
+
+    my $CFConditions = $c->{'conditions'};
+    my $CFFAIcon = $c->{'icon'};
+    my $CFBGColor = $c->{'color'};
+
+    for my $key (keys %{$CFConditions}) {
+      my $value = %{$CFConditions}{$key};
+
+      my $cfValue = $ticket->FirstCustomFieldValue($key);
+
+      # CF equal match
+      if (defined($cfValue) && "$cfValue" =~ /$value/) {
+        if ($mode eq 'rowclass') {
+          return "row-bg-color-".$CFBGColor;
+        } elsif ($mode eq 'icon') {
+          # The backslash is important, RT does render this HTML snippet later.
+          return \"<span class=\"fa $CFFAIcon\"></span>";
+        }
+      }
+    }
+  }
+
 }
 
 ## Ticket Preview
