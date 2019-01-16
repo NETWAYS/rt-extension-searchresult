@@ -17,7 +17,8 @@ sub getHighlight {
   # Due Date
   my $DueConfig = RT->Config->Get('SearchResult_HighlightOnDueDate');
 
-  for my $c (@{$DueConfig}) {
+  # ascending order. 3 wins over 8 for due dates. Nested hash sorting needed.
+  for my $c ( sort {$a->{conditions}{due} <=> $b->{conditions}{due}} @{$DueConfig}) {
     my $DueConditions = $c->{'conditions'};
     my $DueFAIcon = $c->{'icon'};
     my $DueBGColor = $c->{'color'};
@@ -29,8 +30,7 @@ sub getHighlight {
 
       my $diff = $ticket->DueObj->Diff($now);
 
-      # ascending order. 3 wins over 8 for due dates.
-      for my $key (sort { %{$DueConditions}{$a} <=> %{$DueConditions}{$b} } keys %{$DueConditions}) {
+      for my $key (keys %{$DueConditions}) {
         next if $key ne 'due';
 
         my $value = %{$DueConditions}{$key};
