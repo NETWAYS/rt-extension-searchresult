@@ -90,8 +90,8 @@ systemctl restart apache2
 The configuration order doesn't matter, the following conditions are evaluted (first wins):
 
 * Relative Due Date
-* Custom Fields
 * Last Updated By
+* Custom Fields
 
 ### Highlight on Relative Due Date
 

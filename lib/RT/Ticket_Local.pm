@@ -14,7 +14,9 @@ sub getHighlight {
     return;
   }
 
+  ######################################
   # Due Date
+  ######################################
   my $DueConfig = RT->Config->Get('SearchResult_HighlightOnDueDate');
 
   # ascending order. 3 wins over 8 for due dates. Nested hash sorting needed.
@@ -55,37 +57,9 @@ sub getHighlight {
 
   }
 
-  # CF conditions
-  my $CFConfig = RT->Config->Get('SearchResult_HighlightOnCFCondition');
-
-  for my $c (@{$CFConfig}) {
-    next if (!defined($c->{'conditions'}));
-
-    next if ($mode eq 'rowclass' && !defined($c->{'color'}));
-    next if ($mode eq 'icon' && !defined($c->{'icon'}));
-
-    my $CFConditions = $c->{'conditions'};
-    my $CFFAIcon = $c->{'icon'};
-    my $CFBGColor = $c->{'color'};
-
-    for my $key (keys %{$CFConditions}) {
-      my $value = %{$CFConditions}{$key};
-
-      my $cfValue = $ticket->FirstCustomFieldValue($key);
-
-      # CF equal match
-      if (defined($cfValue) && "$cfValue" =~ /$value/) {
-        if ($mode eq 'rowclass') {
-          return "row-bg-color-".$CFBGColor;
-        } elsif ($mode eq 'icon') {
-          # The backslash is important, RT does render this HTML snippet later.
-          return \"<span class=\"fa $CFFAIcon\"></span>";
-        }
-      }
-    }
-  }
-
+  ######################################
   # Ticket Last Updated By Condition
+  ######################################
   my $LastUpdatedByConfig = RT->Config->Get('SearchResult_HighlightOnLastUpdatedByCondition');
 
   my $ownerObj = $ticket->OwnerObj;
@@ -143,6 +117,39 @@ sub getHighlight {
       }
     }
   }
+
+  ######################################
+  # CF conditions
+  ######################################
+  my $CFConfig = RT->Config->Get('SearchResult_HighlightOnCFCondition');
+
+  for my $c (@{$CFConfig}) {
+    next if (!defined($c->{'conditions'}));
+
+    next if ($mode eq 'rowclass' && !defined($c->{'color'}));
+    next if ($mode eq 'icon' && !defined($c->{'icon'}));
+
+    my $CFConditions = $c->{'conditions'};
+    my $CFFAIcon = $c->{'icon'};
+    my $CFBGColor = $c->{'color'};
+
+    for my $key (keys %{$CFConditions}) {
+      my $value = %{$CFConditions}{$key};
+
+      my $cfValue = $ticket->FirstCustomFieldValue($key);
+
+      # CF equal match
+      if (defined($cfValue) && "$cfValue" =~ /$value/) {
+        if ($mode eq 'rowclass') {
+          return "row-bg-color-".$CFBGColor;
+        } elsif ($mode eq 'icon') {
+          # The backslash is important, RT does render this HTML snippet later.
+          return \"<span class=\"fa $CFFAIcon\"></span>";
+        }
+      }
+    }
+  }
+
 }
 
 ## Ticket Preview
