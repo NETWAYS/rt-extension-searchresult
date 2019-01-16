@@ -112,17 +112,18 @@ Key           | Description
 #### Example
 
 ```perl
+# Highlight on: 1) already due 2) due in < 3 days.
 Set($SearchResult_HighlightOnDueDate,
 [
 {
-  "conditions" => { "due" => 3 },
-  "color" => "red",
-  "icon" => "fa-circle"
+  "conditions" => { "due" => 0 },
+  "color" => "red-dark",
+  "icon" => "fa-question-circle"
 },
 {
-  "conditions" => { "due" => 5 },
-  "color" => "yellow",
-  "icon" => "fa-check"
+  "conditions" => { "due" => 3 },
+  "color" => "red-light",
+  "icon" => "fa-question-circle"
 },
 ]
 );
@@ -189,7 +190,7 @@ Set($SearchResult_HighlightOnLastUpdatedByCondition,
 {
   "conditions" => { "groups" => [ "admins" ] },
   "color" => "yellow-dark",
-  "icon" => "fa-exclamation-circle"
+  "icon" => "fa-exclamation-triangle"
 }
 ]
 );
@@ -212,6 +213,11 @@ Grey    | grey, grey-light, grey-dark
 [Font Awesome](https://fontawesome.com) 5.0 SVG icon set is
 included, you can use for example:
 
+* fa-question-circle
+* fa-exclamation-circle
+* fa-check-circle
+* fa-pause-circle
+* fa-exclamation-triangle
 * fa-envelope
 * fa-comment
 * fa-share
@@ -223,8 +229,6 @@ included, you can use for example:
 * fa-sync-alt
 * fa-pause
 * fa-copy
-* fa-check-circle
-* fa-pause-circle
 * fa-user-secret
 * fa-recycle
 * fa-cloud-upload-alt
