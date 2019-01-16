@@ -19,11 +19,16 @@ sub getHighlight {
 
   # ascending order. 3 wins over 8 for due dates. Nested hash sorting needed.
   for my $c ( sort {$a->{conditions}{due} <=> $b->{conditions}{due}} @{$DueConfig}) {
+    next if (!defined($c->{'conditions'}));
+
+    next if ($mode eq 'rowclass' && !defined($c->{'color'}));
+    next if ($mode eq 'icon' && !defined($c->{'icon'}));
+
     my $DueConditions = $c->{'conditions'};
     my $DueFAIcon = $c->{'icon'};
     my $DueBGColor = $c->{'color'};
 
-    # Seriously?
+    # RT stores dates in Unix zero, if not set by the user
     if ($ticket->DueObj->Unix != 0) {
       my $now = new RT::Date($RT::SystemUser);
       $now->SetToNow();
@@ -54,6 +59,11 @@ sub getHighlight {
   my $CFConfig = RT->Config->Get('SearchResult_HighlightOnCFCondition');
 
   for my $c (@{$CFConfig}) {
+    next if (!defined($c->{'conditions'}));
+
+    next if ($mode eq 'rowclass' && !defined($c->{'color'}));
+    next if ($mode eq 'icon' && !defined($c->{'icon'}));
+
     my $CFConditions = $c->{'conditions'};
     my $CFFAIcon = $c->{'icon'};
     my $CFBGColor = $c->{'color'};
@@ -86,10 +96,15 @@ sub getHighlight {
   my $lastUpdatedBy = $lastUpdatedByObj->id;
   my $lastUpdatedByGroups = $lastUpdatedByObj->OwnGroups;
 
-  for my $lubc (@{$LastUpdatedByConfig}) {
-    my $LUBConditions = $lubc->{'conditions'};
-    my $LUBFAIcon = $lubc->{'icon'};
-    my $LUBBGColor = $lubc->{'color'};
+  for my $c (@{$LastUpdatedByConfig}) {
+    next if (!defined($c->{'conditions'}));
+
+    next if ($mode eq 'rowclass' && !defined($c->{'color'}));
+    next if ($mode eq 'icon' && !defined($c->{'icon'}));
+
+    my $LUBConditions = $c->{'conditions'};
+    my $LUBFAIcon = $c->{'icon'};
+    my $LUBBGColor = $c->{'color'};
 
     if (defined($LUBConditions->{'owner'})) {
       # don't care about the value, just compare owner with last update by
