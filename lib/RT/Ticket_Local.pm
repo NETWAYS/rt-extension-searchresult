@@ -26,9 +26,10 @@ sub getHighlight {
     next if ($mode eq 'rowclass' && !defined($c->{'color'}));
     next if ($mode eq 'icon' && !defined($c->{'icon'}));
 
-    my $DueConditions = $c->{'conditions'};
-    my $DueFAIcon = $c->{'icon'};
-    my $DueBGColor = $c->{'color'};
+    my $conditions = $c->{'conditions'};
+    my $icon = $c->{'icon'};
+    my $color = $c->{'color'};
+    my $tooltip = $c->{'tooltip'};
 
     # RT stores dates in Unix zero, if not set by the user
     if ($ticket->DueObj->Unix != 0) {
@@ -37,20 +38,14 @@ sub getHighlight {
 
       my $diff = $ticket->DueObj->Diff($now);
 
-      for my $key (keys %{$DueConditions}) {
+      for my $key (keys %{$conditions}) {
         next if $key ne 'due';
 
-        my $value = %{$DueConditions}{$key};
+        my $value = %{$conditions}{$key};
 
         if ($diff < 60 * 60 * 24 * $value) {
           RT::Logger->debug("Ticket #". $ticket->id ." will be due in < $value days, diff is ". ($diff / (60*60*24))  ." days. Marking search result.");
-
-          if ($mode eq 'rowclass') {
-            return "row-bg-color-".$DueBGColor;
-          } elsif ($mode eq 'icon') {
-            # The backslash is important, RT does render this HTML snippet later.
-            return \"<span class=\"fa $DueFAIcon\"></span>";
-          }
+          return getHighlightValue($ticket, $mode, $color, $icon, $tooltip);
         }
       }
     }
@@ -76,28 +71,23 @@ sub getHighlight {
     next if ($mode eq 'rowclass' && !defined($c->{'color'}));
     next if ($mode eq 'icon' && !defined($c->{'icon'}));
 
-    my $LUBConditions = $c->{'conditions'};
-    my $LUBFAIcon = $c->{'icon'};
-    my $LUBBGColor = $c->{'color'};
+    my $conditions = $c->{'conditions'};
+    my $icon = $c->{'icon'};
+    my $color = $c->{'color'};
+    my $tooltip = $c->{'tooltip'};
 
-    if (defined($LUBConditions->{'owner'})) {
+    if (defined($conditions->{'owner'})) {
       # don't care about the value, just compare owner with last update by
-      #RT::Logger->debug("Owner: $owner Last updated by $lastUpdatedBy");
-
       if ("$owner" ne "$lastUpdatedBy") {
-        if ($mode eq 'rowclass') {
-          return "row-bg-color-".$LUBBGColor;
-        } elsif ($mode eq 'icon') {
-          # The backslash is important, RT does render this HTML snippet later.
-          return \"<span class=\"fa $LUBFAIcon\"></span>";
-        }
+        return getHighlightValue($ticket, $mode, $color, $icon, $tooltip);
       }
     }
-    if (defined($LUBConditions->{'groups'})) {
+
+    if (defined($conditions->{'groups'})) {
       # check whether last reply did not happen from outside group members
       my $highlight = 1;
 
-      for my $groupName (@{ $LUBConditions->{'groups'} }) {
+      for my $groupName (@{ $conditions->{'groups'} }) {
         my $group = RT::Group->new();
         $group->LoadUserDefinedGroup($groupName);
 
@@ -108,12 +98,7 @@ sub getHighlight {
       }
 
       if ($highlight == 1) {
-        if ($mode eq 'rowclass') {
-          return "row-bg-color-".$LUBBGColor;
-        } elsif ($mode eq 'icon') {
-          # The backslash is important, RT does render this HTML snippet later.
-          return \"<span class=\"fa $LUBFAIcon\"></span>";
-        }
+        return getHighlightValue($ticket, $mode, $color, $icon, $tooltip);
       }
     }
   }
@@ -129,27 +114,39 @@ sub getHighlight {
     next if ($mode eq 'rowclass' && !defined($c->{'color'}));
     next if ($mode eq 'icon' && !defined($c->{'icon'}));
 
-    my $CFConditions = $c->{'conditions'};
-    my $CFFAIcon = $c->{'icon'};
-    my $CFBGColor = $c->{'color'};
+    my $conditions = $c->{'conditions'};
+    my $icon = $c->{'icon'};
+    my $color = $c->{'color'};
+    my $tooltip = $c->{'tooltip'};
 
-    for my $key (keys %{$CFConditions}) {
-      my $value = %{$CFConditions}{$key};
+    for my $key (keys %{$conditions}) {
+      my $value = %{$conditions}{$key};
 
       my $cfValue = $ticket->FirstCustomFieldValue($key);
 
       # CF equal match
       if (defined($cfValue) && "$cfValue" =~ /$value/) {
-        if ($mode eq 'rowclass') {
-          return "row-bg-color-".$CFBGColor;
-        } elsif ($mode eq 'icon') {
-          # The backslash is important, RT does render this HTML snippet later.
-          return \"<span class=\"fa $CFFAIcon\"></span>";
-        }
+        return getHighlightValue($ticket, $mode, $color, $icon, $tooltip);
       }
     }
   }
 
+}
+
+## Highlight value helper
+sub getHighlightValue {
+  my $ticket = shift;
+  my $mode = shift;
+  my $color = shift;
+  my $icon = shift;
+  my $tooltip = shift;
+
+  if ($mode eq 'rowclass') {
+    return "row-bg-color-".$color;
+  } elsif ($mode eq 'icon') {
+    # The backslash is important, RT does render this HTML snippet later.
+    return \"<span class=\"fa $icon\" title=\"$tooltip\"></span>";
+  }
 }
 
 ## Ticket Preview
