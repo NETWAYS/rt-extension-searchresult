@@ -18,13 +18,15 @@ You can use this extension e.g. for the following scenarios:
 
 The search result rows can be highlighted matching defined conditions:
 
+* Relative due date
+* Last Updated By is not the ticket owner or in a specified group (e.g. an external customer)
 * Custom name matches value
-* Last Updated By is not the ticket owner or in a specified group
 
 The rows can be highlighted with
 
 * Transparent background color
-* Icon as an additional column from the extended search editor.
+* Icon as an additional column from the extended search editor
+* Tooltip for the icon, users can hover over it.
 
 ![Screenshot](doc/images/rt_extension_searchresult_overview.png)
 
@@ -108,6 +110,7 @@ Key           | Description
 `conditions`  | **Required.** One or multiple key-value pairs in the format `"due" => <number of days>`.
 `color`       | **Optional.** Background color for the highlighted search result line. Supported colors are listed below.
 `icon`        | **Optional.** FontAwesome icon available as additional column in search results, when the condition matches.
+`tooltip`     | **Optional.** Tooltip string shown when user hovers over the icon.
 
 #### Example
 
@@ -118,46 +121,15 @@ Set($SearchResult_HighlightOnDueDate,
 {
   "conditions" => { "due" => 0 },
   "color" => "red-dark",
-  "icon" => "fa-question-circle"
+  "icon" => "fa-question-circle",
+  "tooltip" => "Due date reached. Action required."
 },
 {
   "conditions" => { "due" => 3 },
   "color" => "red-light",
-  "icon" => "fa-question-circle"
+  "icon" => "fa-question-circle",
+  "tooltip" => "Due date soon. Plan ahead."
 },
-]
-);
-```
-
-### Highlight on CF Condition
-
-The search result row will be highlighted when a CF name
-matches a specified value.
-
-You can define multiple highlights at once. Each configuration entry
-requires
-
-Key           | Description
---------------|----------------
-`conditions`  | **Required.** One or multiple key-value pairs in the format `CF_name => CF_expected_value`.
-`color`       | **Optional.** Background color for the highlighted search result line. Supported colors are listed below.
-`icon`        | **Optional.** FontAwesome icon available as additional column in search results, when the condition matches.
-
-#### Example
-
-```perl
-Set($SearchResult_HighlightOnCFCondition,
-[
-{
-  "conditions" => { "TicketReceived" => "yes" },
-  "color" => "green-light",
-  "icon" => "fa-check"
-},
-{
-  "conditions" => { "TicketBought" => "yes" },
-  "color" => "red",
-  "icon" => "fa-pause"
-}
 ]
 );
 ```
@@ -178,6 +150,7 @@ Key           | Description
 `conditions`  | **Required.** One or multiple key-value pairs in the format `"owner" => 1` or `"groups" => [ "<groupname>" ]`.
 `color`       | **Optional.** Background color for the highlighted search result line. Supported colors are listed below.
 `icon`        | **Optional.** FontAwesome icon available as additional column in search results, when the condition matches.
+`tooltip`     | **Optional.** Tooltip string shown when user hovers over the icon.
 
 ```perl
 Set($SearchResult_HighlightOnLastUpdatedByCondition,
@@ -190,7 +163,42 @@ Set($SearchResult_HighlightOnLastUpdatedByCondition,
 {
   "conditions" => { "groups" => [ "admins" ] },
   "color" => "yellow-dark",
-  "icon" => "fa-exclamation-triangle"
+  "icon" => "fa-exclamation-triangle",
+  "tooltip" => "Customer replied. Action required."
+}
+]
+);
+```
+
+### Highlight on CF Condition
+
+The search result row will be highlighted when a CF name
+matches a specified value.
+
+You can define multiple highlights at once. Each configuration entry
+requires
+
+Key           | Description
+--------------|----------------
+`conditions`  | **Required.** One or multiple key-value pairs in the format `CF_name => CF_expected_value`.
+`color`       | **Optional.** Background color for the highlighted search result line. Supported colors are listed below.
+`icon`        | **Optional.** FontAwesome icon available as additional column in search results, when the condition matches.
+`tooltip`     | **Optional.** Tooltip string shown when user hovers over the icon.
+
+#### Example
+
+```perl
+Set($SearchResult_HighlightOnCFCondition,
+[
+{
+  "conditions" => { "TicketReceived" => "yes" },
+  "color" => "green-light",
+  "icon" => "fa-check"
+},
+{
+  "conditions" => { "TicketBought" => "yes" },
+  "color" => "red",
+  "icon" => "fa-pause"
 }
 ]
 );
