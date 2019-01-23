@@ -41,7 +41,7 @@ sub getHighlight {
       for my $key (keys %{$conditions}) {
         next if $key ne 'due';
 
-        my $value = %{$conditions}{$key};
+        my $value = $conditions->{$key};
 
         if ($diff < 60 * 60 * 24 * $value) {
           RT::Logger->debug("Ticket #". $ticket->id ." will be due in < $value days, diff is ". ($diff / (60*60*24))  ." days. Marking search result.");
@@ -120,7 +120,7 @@ sub getHighlight {
     my $tooltip = $c->{'tooltip'};
 
     for my $key (keys %{$conditions}) {
-      my $value = %{$conditions}{$key};
+      my $value = $conditions->{$key};
 
       my $cfValue = $ticket->FirstCustomFieldValue($key);
 
