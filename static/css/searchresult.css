@@ -2,88 +2,229 @@
 tr.evenline {}
 tr.oddline {}
 
-tr.rowhighlight {background-color:#f0f8ff;margin:0;border:0;padding:0;spacing:0;}
+tr.rowhighlight {
+ background-color:#f0f8ff;
+ margin:0;
+ border:0;
+ padding:0;
+ spacing:0;
+}
 
 /* bg colors from highlight. */
-tr.row-bg-color-red td {
- background-color: rgba(255, 85, 102, 0.3)
-}
 tr.row-bg-color-red-light td {
- background-color: rgba(255, 85, 102, 0.1)
+ background-color: rgba(232, 145, 153)
+}
+tr.row-bg-color-red td {
+ background-color: rgba(221, 96, 107)
 }
 tr.row-bg-color-red-dark td {
- background-color: rgba(255, 85, 102, 0.5)
+ background-color: rgba(211, 51, 64)
 }
 
-tr.row-bg-color-blue td {
- background-color: rgba(0, 149, 191, 0.3)
-}
 tr.row-bg-color-blue-light td {
- background-color: rgba(0, 149, 191, 0.1)
+ background-color: rgba(120, 181, 251)
+}
+tr.row-bg-color-blue td {
+ background-color: rgba(63, 146, 250)
 }
 tr.row-bg-color-blue-dark td {
- background-color: rgba(0, 149, 191, 0.5)
+ background-color: rgba(23, 113, 249)
 }
 
-tr.row-bg-color-green td {
- background-color: rgba(68, 187, 119, 0.3)
-}
 tr.row-bg-color-green-light td {
- background-color: rgba(68, 187, 119, 0.1)
+ background-color: rgba(140, 204, 154)
+}
+tr.row-bg-color-green td {
+ background-color: rgba(89, 179, 109)
 }
 tr.row-bg-color-green-dark td {
- background-color: rgba(68, 187, 119, 0.5)
+ background-color: rgba(47, 156, 67)
 }
 
-tr.row-bg-color-yellow td {
- background-color: rgba(255, 170, 68, 0.3)
-}
 tr.row-bg-color-yellow-light td {
- background-color: rgba(255, 170, 68, 0.1)
+ background-color: rgba(254, 219, 128)
+}
+tr.row-bg-color-yellow td {
+ background-color: rgba(253, 202, 77)
 }
 tr.row-bg-color-yellow-dark td {
- background-color: rgba(255, 170, 68, 0.5)
+ background-color: rgba(252, 185, 48)
 }
 
-tr.row-bg-color-purple td {
- background-color: rgba(170, 68, 255, 0.3)
-}
 tr.row-bg-color-purple-light td {
- background-color: rgba(170, 68, 255, 0.1)
+ background-color: rgba(213, 202, 236)
+}
+tr.row-bg-color-purple td {
+ background-color: rgba(173, 152, 216)
 }
 tr.row-bg-color-purple-dark td {
- background-color: rgba(170, 68, 255, 0.5)
+ background-color: rgba(135, 104, 199)
 }
 
-tr.row-bg-color-grey td {
- background-color: rgba(153, 153, 153, 0.3)
-}
 tr.row-bg-color-grey-light td {
- background-color: rgba(153, 153, 153, 0.1)
+ background-color: rgba(216, 211, 208)
+}
+tr.row-bg-color-grey td {
+ background-color: rgba(196, 189, 186)
 }
 tr.row-bg-color-grey-dark td {
- background-color: rgba(153, 153, 153, 0.5)
+ background-color: rgba(177, 168, 164)
 }
 
-/* Status Colours */
+/* Colors for dark mode  */
+body.darkmode tbody.list-item > tr.row-bg-color-red-light > td.collection-as-table,
+body.darkmode tbody.list-item > tr.row-bg-color-red-light > td.collection-as-table * {
+  background-color: #ff6f60 !important;
+}
+body.darkmode tbody.list-item > tr.row-bg-color-red > td.collection-as-table,
+body.darkmode tbody.list-item > tr.row-bg-color-red > td.collection-as-table * {
+  background-color: #e53935 !important;
+}
+body.darkmode tbody.list-item > tr.row-bg-color-red-dark > td.collection-as-table,
+body.darkmode tbody.list-item > tr.row-bg-color-red-dark > td.collection-as-table * {
+  background-color: #ab000d !important;
+}
+body.darkmode tbody.list-item > tr.row-bg-color-red-dark > td  > div a:visited,
+body.darkmode tbody.list-item > tr.row-bg-color-red-dark > td  > a:visited{
+ color: #969696 !important;
+}
+
+body.darkmode tbody.list-item > tr.row-bg-color-blue-light > td.collection-as-table,
+body.darkmode tbody.list-item > tr.row-bg-color-blue-light > td.collection-as-table * {
+  background-color:  #6ab7ff !important;
+}
+body.darkmode tbody.list-item > tr.row-bg-color-blue-light > td  > div a:visited,
+body.darkmode tbody.list-item > tr.row-bg-color-blue-light > td  > a:visited{
+ color: #5d5b5b !important;
+}
+body.darkmode tbody.list-item > tr.row-bg-color-blue > td.collection-as-table,
+body.darkmode tbody.list-item > tr.row-bg-color-blue > td.collection-as-table * {
+  background-color: #1e88e5 !important;
+}
+body.darkmode tbody.list-item > tr.row-bg-color-blue > td  > div a:visited,
+body.darkmode tbody.list-item > tr.row-bg-color-blue > td  > a:visited{
+ color: #5f5858 !important;
+}
+body.darkmode tbody.list-item > tr.row-bg-color-blue > td  > div a,
+body.darkmode tbody.list-item > tr.row-bg-color-blue > td  > a{
+ color: #ffffff !important;
+}
+body.darkmode tbody.list-item > tr.row-bg-color-blue-dark > td.collection-as-table,
+body.darkmode tbody.list-item > tr.row-bg-color-blue-dark > td.collection-as-table * {
+  background-color: #005cb2 !important;
+}
+body.darkmode tbody.list-item > tr.row-bg-color-blue-dark > td  > div a:visited,
+body.darkmode tbody.list-item > tr.row-bg-color-blue-dark > td  > a:visited{
+ color: #808080 !important;
+}
+
+body.darkmode tbody.list-item > tr.row-bg-color-green-light > td.collection-as-table,
+body.darkmode tbody.list-item > tr.row-bg-color-green-light > td.collection-as-table * {
+  background-color: #6abf69 !important;
+}
+body.darkmode tbody.list-item > tr.row-bg-color-green > td.collection-as-table,
+body.darkmode tbody.list-item > tr.row-bg-color-green > td.collection-as-table * {
+  background-color: #388e3c !important;
+}
+body.darkmode tbody.list-item > tr.row-bg-color-green > td  > div a:visited,
+body.darkmode tbody.list-item > tr.row-bg-color-green > td  > a:visited{
+ color: #565454 !important;
+}
+body.darkmode tbody.list-item > tr.row-bg-color-green-dark > td.collection-as-table,
+body.darkmode tbody.list-item > tr.row-bg-color-green-dark > td.collection-as-table * {
+  background-color: #00600f !important;
+}
+body.darkmode tbody.list-item > tr.row-bg-color-green-dark > td  > div a:visited,
+body.darkmode tbody.list-item > tr.row-bg-color-green-dark > td  > a:visited{
+ color: #8a8a8a !important;
+}
+
+body.darkmode tbody.list-item > tr.row-bg-color-yellow-light > td.collection-as-table,
+body.darkmode tbody.list-item > tr.row-bg-color-yellow-light > td.collection-as-table * {
+  background-color: #ffb04c !important;
+}
+body.darkmode tbody.list-item > tr.row-bg-color-yellow > td.collection-as-table,
+body.darkmode tbody.list-item > tr.row-bg-color-yellow > td.collection-as-table * {
+  background-color: #f9a825 !important;
+}
+body.darkmode tbody.list-item > tr.row-bg-color-yellow-dark > td.collection-as-table,
+body.darkmode tbody.list-item > tr.row-bg-color-yellow-dark > td.collection-as-table * {
+  background-color: #c17900 !important;
+}
+
+body.darkmode tbody.list-item > tr.row-bg-color-purple-light > td.collection-as-table,
+body.darkmode tbody.list-item > tr.row-bg-color-purple-light > td.collection-as-table * {
+  background-color: #c158dc !important;
+}
+body.darkmode tbody.list-item > tr.row-bg-color-purple-light > td  > div a:visited,
+body.darkmode tbody.list-item > tr.row-bg-color-purple-light > td  > a:visited{
+ color: #5f5c5c !important;
+}
+body.darkmode tbody.list-item > tr.row-bg-color-purple > td.collection-as-table,
+body.darkmode tbody.list-item > tr.row-bg-color-purple > td.collection-as-table * {
+  background-color: #8e24aa !important;
+}
+body.darkmode tbody.list-item > tr.row-bg-color-purple > td  > div a:visited,
+body.darkmode tbody.list-item > tr.row-bg-color-purple > td  > a:visited{
+ color: #8e8e8e !important;
+}
+body.darkmode tbody.list-item > tr.row-bg-color-purple-dark > td.collection-as-table,
+body.darkmode tbody.list-item > tr.row-bg-color-purple-dark > td.collection-as-table * {
+  background-color: #5c007a !important;
+}
+
+body.darkmode tbody.list-item > tr.row-bg-color-grey-light > td.collection-as-table,
+body.darkmode tbody.list-item > tr.row-bg-color-grey-light > td.collection-as-table * {
+  background-color: #a4a4a4 !important;
+}
+body.darkmode tbody.list-item > tr.row-bg-color-grey > td.collection-as-table,
+body.darkmode tbody.list-item > tr.row-bg-color-grey > td.collection-as-table * {
+  background-color: #757575 !important;
+}
+body.darkmode tbody.list-item > tr.row-bg-color-grey > td  > div a:visited,
+body.darkmode tbody.list-item > tr.row-bg-color-grey > td  > a:visited{
+ color: #a9a9a9 !important;
+}
+body.darkmode tbody.list-item > tr.row-bg-color-grey-dark > td.collection-as-table,
+body.darkmode tbody.list-item > tr.row-bg-color-grey-dark > td.collection-as-table * {
+  background-color: #494949 !important;
+}
+body.darkmode tbody.list-item > tr.row-bg-color-grey-dark > td  > div a:visited,
+body.darkmode tbody.list-item > tr.row-bg-color-grey-dark > td  > a:visited{
+ color: #888888 !important;
+}
+
+/* Highlighting for dark mode   */
+
+body.darkmode tbody.list-item > tr > td  > div a,
+body.darkmode tbody.list-item > tr > td  > a{
+ color: #ededed !important;
+}
+
+body.darkmode tbody.list-item > tr > td  > div a:visited,
+body.darkmode tbody.list-item > tr > td  > a:visited{
+ color: #6b6b6b !important;
+}
+
+/* Status Colors */
 tr.statusnew td {
- background-color: rgba(255, 85, 102, 0.1)
+ background-color: #ff6f60
 }
 
 tr.statusopen td {
- background-color: rgba(255, 170, 68, 0.1)
+ background-color: #ffb04c
 }
 
 tr.statusstalled td {
- background-color: rgba(170, 68, 255, 0.1)
+ background-color: #8e24aa
 }
 
 tr.statusresolved td {
- background-color: rgba(68, 187, 119, 0.1)
+ background-color: #6abf69
 }
 
 tr.statusrejected td {
- background-color: rgba(153, 153, 153, 0.1)
+ background-color: #a4a4a4
 }
 
 .statusnew, .statusopen, .statusstalled, .statusrejected, .statusresolved {
