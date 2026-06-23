@@ -13,8 +13,9 @@ if (RT->Config->Get('SearchResult_PreviewEnabled')) {
 $COLUMN_MAP->{'Icon'} = {
   title => ' ', # we don't need an extra title
   value => sub {
-    # Use helper from Ticket_Local.pm
-    return loc($_[0]->getHighlight("icon"));
+    # Use helper from Ticket_Local.pm. getHighlight returns a scalar ref
+    # (raw HTML) or undef, both handled correctly by ProcessColumnMapValue.
+    return $_[0]->getHighlight("icon");
   }
 }
 

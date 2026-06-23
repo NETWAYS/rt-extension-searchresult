@@ -43,8 +43,7 @@ You may also send us an email to [support@netways.de](mailto:support@netways.de)
 
 ## Requirements
 
-- RT 4.4.3
-- Search results containing a NEWLINE separator need [PR #273](https://github.com/bestpractical/rt/pull/273).
+- RT 6.0 or newer
 
 ## Installation
 
@@ -76,7 +75,7 @@ make install
 Clear your mason cache.
 
 ```
-rm -rf /opt/rt4/var/mason_data/obj
+rm -rf /opt/rt/var/mason_data/obj
 ```
 
 Restart your web server.
@@ -121,13 +120,13 @@ Set($SearchResult_HighlightOnDueDate,
 {
   "conditions" => { "due" => 0 },
   "color" => "red-dark",
-  "icon" => "fa-question-circle",
+  "icon" => "question-circle",
   "tooltip" => "Due date reached. Action required."
 },
 {
   "conditions" => { "due" => 3 },
   "color" => "red-light",
-  "icon" => "fa-question-circle",
+  "icon" => "question-circle",
   "tooltip" => "Due date soon. Plan ahead."
 },
 ]
@@ -158,12 +157,12 @@ Set($SearchResult_HighlightOnLastUpdatedByCondition,
 #{
 #  "conditions" => { "owner" => 1 },
 #  "color" => "blue-dark",
-#  "icon" => "fa-star"
+#  "icon" => "star"
 #},
 {
   "conditions" => { "groups" => [ "admins" ] },
   "color" => "yellow-dark",
-  "icon" => "fa-exclamation-triangle",
+  "icon" => "exclamation-triangle",
   "tooltip" => "Customer replied. Action required."
 }
 ]
@@ -193,12 +192,12 @@ Set($SearchResult_HighlightOnCFCondition,
 {
   "conditions" => { "TicketReceived" => "yes" },
   "color" => "green-light",
-  "icon" => "fa-check"
+  "icon" => "check-circle"
 },
 {
   "conditions" => { "TicketBought" => "yes" },
   "color" => "red",
-  "icon" => "fa-pause"
+  "icon" => "pause-circle"
 }
 ]
 );
@@ -216,27 +215,24 @@ Purple  | purple, purple-light, purple-dark
 Grey    | grey, grey-light, grey-dark
 
 
-### Font Awesome Icons
+### Icons
 
-[Font Awesome](https://fontawesome.com) 5.0 SVG icon set is
-included, you can use for example:
+The [Bootstrap Icons](https://icons.getbootstrap.com/) set (v1.11.3) is
+bundled with this extension. Configure the `icon` value with a Bootstrap
+icon name **without** the `bi-` prefix, for example:
 
-* fa-question-circle
-* fa-exclamation-circle
-* fa-check-circle
-* fa-pause-circle
-* fa-exclamation-triangle
-* fa-envelope
-* fa-comment
-* fa-share
-* fa-folder-open
-* fa-check
-* fa-ban
-* fa-trash-alt
-* fa-star
-* fa-sync-alt
-* fa-pause
-* fa-copy
-* fa-user-secret
-* fa-recycle
-* fa-cloud-upload-alt
+* exclamation-triangle
+* exclamation-circle
+* question-circle
+* check-circle
+* x-circle
+* check
+* pause-circle
+* envelope
+* chat-left-text
+* clock
+* bell
+* flag
+* star
+
+See the full catalog at <https://icons.getbootstrap.com/>.

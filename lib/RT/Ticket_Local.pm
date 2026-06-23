@@ -10,7 +10,7 @@ sub getHighlight {
   my $mode = shift;
 
   if ($mode ne 'icon' && $mode ne 'rowclass') {
-    RT::Logger->crit("Programming error: Wrong mode $mode passed.");
+    RT->Logger->crit("Programming error: Wrong mode $mode passed.");
     return;
   }
 
@@ -31,12 +31,10 @@ sub getHighlight {
     my $color = $c->{'color'};
     my $tooltip = $c->{'tooltip'};
 
-    # RT stores dates in Unix zero, if not set by the user
-    if ($ticket->DueObj->Unix != 0) {
-      my $now = new RT::Date($RT::SystemUser);
-      $now->SetToNow();
-
-      my $diff = $ticket->DueObj->Diff($now);
+    # Diff() compares against "now" and returns undef when no due date is set,
+    # so there is no need to build a separate RT::Date for the current time.
+    my $diff = $ticket->DueObj->Diff;
+    if (defined $diff) {
 
       for my $key (keys %{$conditions}) {
         next if $key ne 'due';
@@ -44,7 +42,7 @@ sub getHighlight {
         my $value = $conditions->{$key};
 
         if ($diff < 60 * 60 * 24 * $value) {
-          RT::Logger->debug("Ticket #". $ticket->id ." will be due in < $value days, diff is ". ($diff / (60*60*24))  ." days. Marking search result.");
+          RT->Logger->debug("Ticket #". $ticket->id ." will be due in < $value days, diff is ". ($diff / (60*60*24))  ." days. Marking search result.");
           return getHighlightValue($ticket, $mode, $color, $icon, $tooltip);
         }
       }
@@ -57,13 +55,13 @@ sub getHighlight {
   ######################################
   my $LastUpdatedByConfig = RT->Config->Get('SearchResult_HighlightOnLastUpdatedByCondition');
 
-  my $ownerObj = $ticket->OwnerObj;
-  my $owner = $ownerObj->id;
-  my $ownerGroups = $ownerObj->OwnGroups;
-
-  my $lastUpdatedByObj = $ticket->LastUpdatedByObj;
-  my $lastUpdatedBy = $lastUpdatedByObj->id;
-  my $lastUpdatedByGroups = $lastUpdatedByObj->OwnGroups;
+  # Owner/last-updater are DB lookups; only resolve them when this section is
+  # actually configured (otherwise the loop below never runs anyway).
+  my ($owner, $lastUpdatedBy);
+  if ($LastUpdatedByConfig && @{$LastUpdatedByConfig}) {
+    $owner        = $ticket->OwnerObj->id;
+    $lastUpdatedBy = $ticket->LastUpdatedByObj->id;
+  }
 
   for my $c (@{$LastUpdatedByConfig}) {
     next if (!defined($c->{'conditions'}));
@@ -88,7 +86,7 @@ sub getHighlight {
       my $highlight = 1;
 
       for my $groupName (@{ $conditions->{'groups'} }) {
-        my $group = RT::Group->new();
+        my $group = RT::Group->new(RT->SystemUser);
         $group->LoadUserDefinedGroup($groupName);
 
         if ($group->HasMemberRecursively($lastUpdatedBy)) {
@@ -124,7 +122,7 @@ sub getHighlight {
 
       my $cfValue = $ticket->FirstCustomFieldValue($key);
 
-      # CF equal match
+      # CF regex match: the configured value is used as a regular expression
       if (defined($cfValue) && "$cfValue" =~ /$value/) {
         return getHighlightValue($ticket, $mode, $color, $icon, $tooltip);
       }
@@ -144,8 +142,9 @@ sub getHighlightValue {
   if ($mode eq 'rowclass') {
     return "row-bg-color-".$color;
   } elsif ($mode eq 'icon') {
-    # The backslash is important, RT does render this HTML snippet later.
-    return \"<span class=\"fa $icon\" title=\"$tooltip\"></span>";
+    # The backslash is important: a scalar ref tells RT to render this HTML
+    # snippet as-is instead of escaping it.
+    return \"<i class=\"bi bi-$icon\" title=\"$tooltip\"></i>";
   }
 }
 

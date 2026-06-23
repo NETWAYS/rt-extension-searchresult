@@ -7,14 +7,7 @@ use RT;
 
 our $VERSION='2.1.0';
 
-if (eval { require RT::Extension::FontAwesome; }) {
-    RT->Logger->debug('SearchResults: RT-Extension-FontAwesome is available, omit loading');
-} else {
-    RT->Logger->debug('SearchResults: RT-Extension-FontAwesome is NOT available, loading our own');
-    RT->AddJavaScript('fontawesome-svg/js/fontawesome-all.min.js');
-}
-
-RT->AddStyleSheets('searchresult.css');
+RT->AddStyleSheets('bootstrap-icons.css', 'searchresult.css');
 
 =pod
 
@@ -26,7 +19,7 @@ RT::Extension::SearchResult
 
 =head1 RT VERSION
 
-Works with RT 4.4.3
+Works with RT 6.0.0 and newer.
 
 =head1 REQUIREMENTS
 
@@ -42,7 +35,7 @@ Works with RT 4.4.3
 
 May need root permissions
 
-=item Edit your F</opt/rt4/etc/RT_SiteConfig.pm>
+=item Edit your F</opt/rt/etc/RT_SiteConfig.pm>
 
 Add this line:
 
@@ -50,7 +43,7 @@ Add this line:
 
 =item Clear your mason cache
 
-    rm -rf /opt/rt4/var/mason_data/obj
+    rm -rf /opt/rt/var/mason_data/obj
 
 =item Restart your webserver
 
